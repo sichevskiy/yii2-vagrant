@@ -1,0 +1,3 @@
+- name: run migrations
+  shell: removes=/var/www/yii2-vagrant/apps/project/yii chdir=/var/www/yii2-vagrant/apps/project/ php yii migrate --interactive=0
+  when: migrate_db

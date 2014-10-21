@@ -1,0 +1,43 @@
+hostname: yii2-vagrant.local
+is_production: false
+
+php_error_reporting: E_ALL
+php_display_errors: On
+php_upload_max_filesize: 20M
+php_post_max_size: 25M
+
+apache_run_user: www-data
+apache_run_group: www-data
+apache_server_name: localhost
+default_apache_document_root: /var/www/yii2-vagrant/apps/project/frontend/web
+
+path_to_ssl_certs: '/etc/apache2/ssl/certs/'
+
+ssl_certs_locations: []
+
+ssl_apache_vhosts: []
+
+apache_vhosts: [
+    {name: 'project.192.168.42.20.xip.io', rootFolder: '/var/www/yii2-vagrant/apps/project/frontend/web', email: 'admin@localhost'},
+    {name: 'admin.192.168.42.20.xip.io', rootFolder: '/var/www/yii2-vagrant/apps/project/backend/web', email: 'admin@localhost'},
+    {name: 'api.192.168.42.20.xip.io', rootFolder: '/var/www/yii2-vagrant/apps/project/api/web', email: 'admin@localhost'}
+]
+
+phpmyadmin_name: db.192.168.42.20.xip.io
+phpmyadmin_port: 80
+phpmyadmin_email: admin@localhost
+
+mysql_bind_address: 127.0.0.1
+mysql_root_pass: ljkJH86KJ
+
+mysql_app_user: project
+mysql_app_pass: JHjkh67KJH6KLJHN
+
+mysql_databases: [
+  yii2_project,
+]
+
+migrate_db: true
+monit_port: 2812
+monit_user: admin
+monit_password: 98dankjja

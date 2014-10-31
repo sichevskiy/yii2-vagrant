@@ -30,7 +30,7 @@ sudo apt-get install nfs-kernel-server nfs-common portmap
 ## Run vagrant
 
 ```
-cd /var/www/yii2-vagrant/
+cd c:/yii2-vagrant/
 vagrant up
 ```
 
@@ -44,6 +44,6 @@ vagrant up
 ## How to connect to virtual machine via ssh
 
 ```
-cd /var/www/yii2-vagrant/
+cd c:/yii2-vagrant/
 vagrant ssh
 ```

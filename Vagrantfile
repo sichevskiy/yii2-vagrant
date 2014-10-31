@@ -23,33 +23,31 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	project.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
         project.vm.network "private_network", ip: "192.168.42.20"
         project.vm.network "forwarded_port", guest: 80, host: 8090
-        project.vm.synced_folder "/var/www/yii2-vagrant", "/var/www/yii2-vagrant", owner: "www-data", group: "www-data"
-        project.vm.synced_folder "/var/www/xdebug", "/var/www/xdebug", owner: "www-data", group: "www-data"
+        project.vm.synced_folder "c:/yii2-vagrant", "/var/www/yii2-vagrant", owner: "www-data", group: "www-data", :mount_options => ["dmode=777","fmode=666"]
+        project.vm.synced_folder "c:/xdebug", "/var/www/xdebug", owner: "www-data", group: "www-data", :mount_options => ["dmode=777","fmode=666"]
 
         # PLUGINS
         # Set entries in hosts file
         # https://github.com/cogitatio/vagrant-hostsupdater
         if Vagrant.has_plugin?("vagrant-hostsupdater")
           project.hostsupdater.remove_on_suspend = true
-          project.vm.hostname = "192.168.42.20.local"
+          project.vm.hostname = "192.168.42.20.xip.io"
         end
         if Vagrant.has_plugin?("vagrant-cachier")
           project.cache.auto_detect = true
         end
 
 		# PROVISIONING
-		# Ansible
-		# To use Ansible provisioning you should have Ansible installed on your host machine
-		# see here http://docs.ansible.com/intro_installation.html#installing-the-control-machine
-		project.vm.provision "ansible" do |ansible|
-			# should be equal to host name in Ansible hosts file
-			ansible.limit = "dev"
-			ansible.playbook = "build/ansible/dev.yml"
-			ansible.inventory_path = "build/ansible/dev"
-			# set to 'vvvv' for debug output in case of problems or leave it false
-			ansible.verbose = 'vvvv'
-			ansible.host_key_checking = false
-		end
+		$script = <<SCRIPT
+                sudo apt-add-repository ppa:rquillo/ansible -y
+                sudo apt-get update -y
+                sudo apt-get install ansible -y
+SCRIPT
+
+        config.vm.provision "shell", inline: $script
+        config.vm.provision "shell" do |sh|
+                sh.inline = "ansible-playbook /var/www/yii2-vagrant/build/ansible/dev.yml --inventory-file=/var/www/yii2-vagrant/build/ansible/dev --connection=local"
+        end
 
   end
 
